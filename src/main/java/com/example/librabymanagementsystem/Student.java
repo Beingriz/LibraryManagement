@@ -19,6 +19,7 @@ public class Student {
     String name;
     @Enumerated(EnumType.STRING)
     Gender gender;
+    int age;
     String email;
 
 }
