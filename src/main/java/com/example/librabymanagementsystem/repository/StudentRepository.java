@@ -1,5 +1,7 @@
-package com.example.librabymanagementsystem;
+package com.example.librabymanagementsystem.repository;
 
+import com.example.librabymanagementsystem.Enum.Gender;
+import com.example.librabymanagementsystem.Model.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

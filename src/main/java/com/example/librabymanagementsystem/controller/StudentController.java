@@ -1,5 +1,8 @@
-package com.example.librabymanagementsystem;
+package com.example.librabymanagementsystem.controller;
 
+import com.example.librabymanagementsystem.Enum.Gender;
+import com.example.librabymanagementsystem.Model.Student;
+import com.example.librabymanagementsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +16,9 @@ public class StudentController {
     @Autowired
     StudentService studentService;
     @PostMapping("/add")
-    public ResponseEntity addStudent(@RequestBody Student student){
-        Student savedstudent = studentService.addStudent(student);
-        return new ResponseEntity(savedstudent, HttpStatus.CREATED);
+    public ResponseEntity<String> addStudent(@RequestBody Student student){
+        String savedstudent = studentService.addStudent(student);
+        return new ResponseEntity<>(savedstudent, HttpStatus.CREATED);
     }
 
     @GetMapping("/get")
@@ -37,7 +40,7 @@ public class StudentController {
     public ResponseEntity updateAge(@RequestParam("id") int id, @RequestParam("age") int age){
         Student student = studentService.udpateAge(id, age);
         if(student!=null){
-            return new ResponseEntity(student, HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(student, HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>("Invalid Student Reg. No!", HttpStatus.BAD_REQUEST);
     }
@@ -45,8 +48,8 @@ public class StudentController {
     public List<Student> getallStudents(){
         return studentService.getallStudents();
     }
-    @GetMapping("getbygender")
-    public List<Student> maleStudents(@RequestParam("gender") Gender gender){
+    @GetMapping("geet-males")
+    public List<String> maleStudents(@RequestParam("gender") Gender gender){
         return studentService.maleStudents(gender);
     }
 
