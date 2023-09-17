@@ -4,6 +4,9 @@ import com.example.librabymanagementsystem.Enum.Gender;
 import com.example.librabymanagementsystem.Enum.Status;
 import com.example.librabymanagementsystem.Model.LibraryCard;
 import com.example.librabymanagementsystem.Model.Student;
+import com.example.librabymanagementsystem.dto.requestDTO.StudentRequest;
+import com.example.librabymanagementsystem.dto.responseDTO.CardResponseDTO;
+import com.example.librabymanagementsystem.dto.responseDTO.StudentResponse;
 import com.example.librabymanagementsystem.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,20 +21,56 @@ public class StudentService {
     @Autowired
     StudentRepository studentRepository;
 
-    public String addStudent(Student student) {
-        LibraryCard libraryCard = new LibraryCard();
-        libraryCard.setCardNo(String.valueOf(UUID.randomUUID()));
-        libraryCard.setStatus(Status.ACTIVE);
-        libraryCard.setStudent(student); // Sending Studnet Object to Library Card
-        student.setLibraryCard(libraryCard); // Setting Library card of student
+    public StudentResponse addStudent(StudentRequest studentRequest) {
+
+        // converting Request DTO to Model
+           Student student = Student.builder()
+                .age(studentRequest.getAge())
+                .email(studentRequest.getEmail())
+                .name(studentRequest.getName())
+                .gender(studentRequest.getGender())
+                .build();
+
+        // Setting Librarby Card to Student.
+        LibraryCard libraryCard = LibraryCard.builder()
+                .cardNo(String.valueOf(UUID.randomUUID()))
+                .status(Status.ACTIVE)
+                .student(student)
+                .build();
+
+        student.setLibraryCard(libraryCard); // Setting Library card of student */
 
         Student savedStudnet = studentRepository.save(student);
-        return "Student Saved Successfully.";
+//        Converting model to Response DTO
+
+        StudentResponse studentResponse = new StudentResponse();
+        studentResponse.setName(savedStudnet.getName());
+        studentResponse.setEmail(savedStudnet.getEmail());
+        studentResponse.setAge(savedStudnet.getAge());
+
+
+        CardResponseDTO cardResponseDTO =  new CardResponseDTO();
+        cardResponseDTO.setCardNo(savedStudnet.getLibraryCard().getCardNo());
+        cardResponseDTO.setStatus(savedStudnet.getLibraryCard().getStatus());
+        cardResponseDTO.setIssueDate(savedStudnet.getLibraryCard().getIssueDate());
+
+        studentResponse.setCardResponseDTO(cardResponseDTO);
+        studentResponse.setMessage("You have been Saved!!");
+
+
+        return studentResponse;
     }
 
-    public Student getStudent(int id) {
-        Optional<Student> student = studentRepository.findById(id);
-        if (student.isPresent()) return student.get();
+    public StudentResponse getStudent(int id) {
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
+            StudentResponse studentResponse = new StudentResponse();
+            studentResponse.setName(student.getName());
+            studentResponse.setEmail(student.getEmail());
+            studentResponse.setAge(student.getAge());
+            return studentResponse;
+        }
     return null;
     }
 
@@ -43,12 +82,19 @@ public class StudentService {
         return false;
     }
 
-    public Student udpateAge(int id, int age) {
-        if(this.getStudent(id)!=null){
-            Student student = this.getStudent(id);
+    public StudentResponse udpateAge(int id, int age) {
+        Optional<Student> studentOptional = studentRepository.findById(id);
+        if (studentOptional.isPresent()) {
+            Student student = studentOptional.get();
             student.setAge(age);
-            return student;
+            StudentResponse studentResponse = new StudentResponse();
+            studentResponse.setName(student.getName());
+            studentResponse.setAge(student.getAge());
+            studentResponse.setEmail(student.getEmail());
+            studentResponse.setMessage("Found Student!");
+            return studentResponse;
         }
+
         return null;
     }
 

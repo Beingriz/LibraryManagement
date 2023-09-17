@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
@@ -13,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 public class Book {
     @Id
-            @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     String title;
@@ -25,9 +28,13 @@ public class Book {
 
     double cost;
 
+    boolean issued;
 
     @ManyToOne
     @JoinColumn
     Author author;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL) // Creating bi Directional Realtionship with book and Transaction.
+    List<Transaction> transactions = new ArrayList<>();
 
 }

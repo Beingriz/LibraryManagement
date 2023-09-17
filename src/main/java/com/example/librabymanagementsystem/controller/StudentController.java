@@ -2,6 +2,8 @@ package com.example.librabymanagementsystem.controller;
 
 import com.example.librabymanagementsystem.Enum.Gender;
 import com.example.librabymanagementsystem.Model.Student;
+import com.example.librabymanagementsystem.dto.requestDTO.StudentRequest;
+import com.example.librabymanagementsystem.dto.responseDTO.StudentResponse;
 import com.example.librabymanagementsystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,16 +18,16 @@ public class StudentController {
     @Autowired
     StudentService studentService;
     @PostMapping("/add")
-    public ResponseEntity<String> addStudent(@RequestBody Student student){
-        String savedstudent = studentService.addStudent(student);
-        return new ResponseEntity<>(savedstudent, HttpStatus.CREATED);
+    public ResponseEntity<StudentResponse> addStudent(@RequestBody StudentRequest studentRequest){
+        StudentResponse savedstudent = studentService.addStudent(studentRequest);
+        return new ResponseEntity<StudentResponse>(savedstudent, HttpStatus.CREATED);
     }
 
     @GetMapping("/get")
     public ResponseEntity getStudent(@RequestParam("id") int id){
-        Student student =  studentService.getStudent(id);
+        StudentResponse student =  studentService.getStudent(id);
         if(student!=null){
-            return new ResponseEntity<>(student, HttpStatus.FOUND);
+            return new ResponseEntity<StudentResponse>(student, HttpStatus.FOUND);
         }
         return new ResponseEntity<>("Invalid Reg. Id", HttpStatus.BAD_REQUEST);
     }
@@ -38,7 +40,7 @@ public class StudentController {
     }
     @PostMapping("/update")
     public ResponseEntity updateAge(@RequestParam("id") int id, @RequestParam("age") int age){
-        Student student = studentService.udpateAge(id, age);
+        StudentResponse student = studentService.udpateAge(id, age);
         if(student!=null){
             return new ResponseEntity<>(student, HttpStatus.ACCEPTED);
         }

@@ -3,6 +3,7 @@ package com.example.librabymanagementsystem.service;
 import com.example.librabymanagementsystem.Enum.Genre;
 import com.example.librabymanagementsystem.Model.Author;
 import com.example.librabymanagementsystem.Model.Book;
+import com.example.librabymanagementsystem.dto.responseDTO.BookResponseDTO;
 import com.example.librabymanagementsystem.exception.AuthorNotFoundException;
 import com.example.librabymanagementsystem.repository.AuthorRepository;
 import com.example.librabymanagementsystem.repository.BookRepo;
@@ -52,15 +53,6 @@ public class BookService {
         return names;
     }
 
-    public List<String> booksByGenreAndPrice(Genre genre, int cost) {
-        List<String> names = new ArrayList<>();
-        List<Book> books= bookRepo.findByGenre(genre);
-        for(Book b : books){
-            if(b.getCost()>cost) names.add(b.getTitle());
-        }
-        return names;
-    }
-
     public List<String> booksByPages(int from, int to) {
         List<String> names = new ArrayList<>();
         List<Book> books= bookRepo.findAll();
@@ -78,5 +70,20 @@ public class BookService {
                 names.add(b.getAuthor().getName());
         }
         return names;
+    }
+
+    public List<BookResponseDTO> booksByGenreAndCost(String genre, double cost) {
+        List<Book>  books  =  bookRepo.booksByGenreAndCost(genre, cost);
+        List<BookResponseDTO> bookResponseDTO =  new ArrayList<>();
+        for (Book b : books){
+            BookResponseDTO response = new BookResponseDTO();
+            response.setGenre(b.getGenre());
+            response.setCost(b.getCost());
+            response.setTitle(b.getTitle());
+            response.setNoOfPages(b.getNoOfPages());
+            response.setAuthor(b.getAuthor().getName());
+            bookResponseDTO.add(response);
+        }
+        return bookResponseDTO;
     }
 }

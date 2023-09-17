@@ -2,6 +2,7 @@ package com.example.librabymanagementsystem.controller;
 
 import com.example.librabymanagementsystem.Enum.Genre;
 import com.example.librabymanagementsystem.Model.Book;
+import com.example.librabymanagementsystem.dto.responseDTO.BookResponseDTO;
 import com.example.librabymanagementsystem.exception.AuthorNotFoundException;
 import com.example.librabymanagementsystem.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,9 @@ public class BookController {
         return bookService.booksByGenre(genre);
     }
 
-    @GetMapping("books")
-    public List<String> booksByGenreAndPrice(@RequestParam("genre") Genre genre, @RequestParam("cost") int cost){
-        return bookService.booksByGenreAndPrice(genre,cost);
+    @GetMapping("books-by-genre-and-cost")
+    public List<BookResponseDTO> booksByGenreAndCost(@RequestParam("genre") String genre, @RequestParam("cost") double cost){
+        return bookService.booksByGenreAndCost(genre,cost);
     }
     @GetMapping("books-bw-pages")
     public List<String> booksByPages(@RequestParam("from") int from, @RequestParam("to") int to){
