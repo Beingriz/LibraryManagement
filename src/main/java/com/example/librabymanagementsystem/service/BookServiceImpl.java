@@ -7,6 +7,7 @@ import com.example.librabymanagementsystem.dto.responseDTO.BookResponseDTO;
 import com.example.librabymanagementsystem.exception.AuthorNotFoundException;
 import com.example.librabymanagementsystem.repository.AuthorRepository;
 import com.example.librabymanagementsystem.repository.BookRepo;
+import com.example.librabymanagementsystem.service.impl.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookService {
+public class BookServiceImpl implements BookService {
     @Autowired
     AuthorRepository authorRepository;
     @Autowired

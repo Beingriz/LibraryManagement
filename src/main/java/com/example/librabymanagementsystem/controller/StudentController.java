@@ -4,7 +4,7 @@ import com.example.librabymanagementsystem.Enum.Gender;
 import com.example.librabymanagementsystem.Model.Student;
 import com.example.librabymanagementsystem.dto.requestDTO.StudentRequest;
 import com.example.librabymanagementsystem.dto.responseDTO.StudentResponse;
-import com.example.librabymanagementsystem.service.StudentService;
+import com.example.librabymanagementsystem.service.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +16,16 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
     @Autowired
-    StudentService studentService;
+    StudentServiceImpl studentServiceImpl;
     @PostMapping("/add")
     public ResponseEntity<StudentResponse> addStudent(@RequestBody StudentRequest studentRequest){
-        StudentResponse savedstudent = studentService.addStudent(studentRequest);
+        StudentResponse savedstudent = studentServiceImpl.addStudent(studentRequest);
         return new ResponseEntity<StudentResponse>(savedstudent, HttpStatus.CREATED);
     }
 
     @GetMapping("/get")
     public ResponseEntity getStudent(@RequestParam("id") int id){
-        StudentResponse student =  studentService.getStudent(id);
+        StudentResponse student =  studentServiceImpl.getStudent(id);
         if(student!=null){
             return new ResponseEntity<StudentResponse>(student, HttpStatus.FOUND);
         }
@@ -33,14 +33,14 @@ public class StudentController {
     }
     @DeleteMapping("/delete")
     public ResponseEntity deleteStudent(@RequestParam("id") int id){
-        if(studentService.deleteStudent(id)){
+        if(studentServiceImpl.deleteStudent(id)){
             return new ResponseEntity<>("Student Deleted Successfully!", HttpStatus.FOUND);
         }
         return new ResponseEntity<>("Invalid Reg. Id", HttpStatus.BAD_REQUEST);
     }
     @PostMapping("/update")
     public ResponseEntity updateAge(@RequestParam("id") int id, @RequestParam("age") int age){
-        StudentResponse student = studentService.udpateAge(id, age);
+        StudentResponse student = studentServiceImpl.udpateAge(id, age);
         if(student!=null){
             return new ResponseEntity<>(student, HttpStatus.ACCEPTED);
         }
@@ -48,11 +48,11 @@ public class StudentController {
     }
     @GetMapping("all")
     public List<Student> getallStudents(){
-        return studentService.getallStudents();
+        return studentServiceImpl.getallStudents();
     }
     @GetMapping("geet-males")
     public List<String> maleStudents(@RequestParam("gender") Gender gender){
-        return studentService.maleStudents(gender);
+        return studentServiceImpl.maleStudents(gender);
     }
 
 }

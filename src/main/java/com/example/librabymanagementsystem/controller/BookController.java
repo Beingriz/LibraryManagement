@@ -4,10 +4,8 @@ import com.example.librabymanagementsystem.Enum.Genre;
 import com.example.librabymanagementsystem.Model.Book;
 import com.example.librabymanagementsystem.dto.responseDTO.BookResponseDTO;
 import com.example.librabymanagementsystem.exception.AuthorNotFoundException;
-import com.example.librabymanagementsystem.service.BookService;
+import com.example.librabymanagementsystem.service.BookServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,19 +15,19 @@ import java.util.List;
 public class BookController {
 
     @Autowired
-    BookService bookService;
+    BookServiceImpl bookServiceImpl;
 
     @PostMapping("/add")
     public String addBook(@RequestBody  Book book){
         try {
-            return bookService.addBook(book);
+            return bookServiceImpl.addBook(book);
         }catch (AuthorNotFoundException e){
            return e.getMessage();
         }
     }
     @DeleteMapping("/delete")
     public String deleteBook(@RequestParam("id") int id){
-       if(bookService.deleteBook(id)){
+       if(bookServiceImpl.deleteBook(id)){
            return "Book Deleted!!";
        }
        return "Invalid Book Id";
@@ -37,20 +35,21 @@ public class BookController {
 
     @GetMapping("/list-books")
     public List<String> booksByGenre(@RequestParam("genre") Genre genre){
-        return bookService.booksByGenre(genre);
+        return bookServiceImpl.booksByGenre(genre);
     }
 
     @GetMapping("books-by-genre-and-cost")
     public List<BookResponseDTO> booksByGenreAndCost(@RequestParam("genre") String genre, @RequestParam("cost") double cost){
-        return bookService.booksByGenreAndCost(genre,cost);
+        return bookServiceImpl.booksByGenreAndCost(genre,cost);
     }
     @GetMapping("books-bw-pages")
     public List<String> booksByPages(@RequestParam("from") int from, @RequestParam("to") int to){
-        return bookService.booksByPages(from,to);
+        return bookServiceImpl.booksByPages(from,to);
     }
     @GetMapping("auth-by-genre")
     public List<String> authorByGenre(@RequestParam("genre") Genre genre){
-        return bookService.authorByGenre(genre);
+        return bookServiceImpl.authorByGenre(genre);
     }
+
 
 }

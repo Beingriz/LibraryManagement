@@ -8,6 +8,7 @@ import com.example.librabymanagementsystem.dto.requestDTO.StudentRequest;
 import com.example.librabymanagementsystem.dto.responseDTO.CardResponseDTO;
 import com.example.librabymanagementsystem.dto.responseDTO.StudentResponse;
 import com.example.librabymanagementsystem.repository.StudentRepository;
+import com.example.librabymanagementsystem.service.impl.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class StudentService {
+public class StudentServiceImpl  implements StudentService {
     @Autowired
     StudentRepository studentRepository;
 

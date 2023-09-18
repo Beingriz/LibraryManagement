@@ -1,7 +1,7 @@
 package com.example.librabymanagementsystem.controller;
 
 import com.example.librabymanagementsystem.Model.Author;
-import com.example.librabymanagementsystem.service.AuthorService;
+import com.example.librabymanagementsystem.service.AuthorServiceimpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthorController {
 
     @Autowired
-    AuthorService authorService;
+    AuthorServiceimpl authorServiceimpl;
     @PostMapping("/add")
     public ResponseEntity<Author> addAuthor(@RequestBody Author author){
-       Author savedAuth =  authorService.addAuthor(author);
+       Author savedAuth =  authorServiceimpl.addAuthor(author);
        return new ResponseEntity<>(savedAuth, HttpStatus.CREATED);
     }
 }
